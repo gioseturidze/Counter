@@ -6,8 +6,6 @@ class ViewController: UIViewController {
     
     var date = Date.now
     let formatter = DateFormatter()
-    
-    var historyArray: [String] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,7 +35,6 @@ class ViewController: UIViewController {
     
     
     @IBAction func increment(_ sender: Any) {
-        date = Date.now
         counter += 1
         counterValue(counter)
         changesHistory(tapHistoryTextView, "+1")
@@ -45,7 +42,6 @@ class ViewController: UIViewController {
     
     
     @IBAction func decrement(_ sender: Any) {
-        date = Date.now
         if(counter > 0){
             counter -= 1
             changesHistory(tapHistoryTextView, "-1")
@@ -68,15 +64,11 @@ class ViewController: UIViewController {
     }
     
     func changesHistory(_ tapHistory: UITextView, _ valueChanges: String){
-        tapHistory.text = "История изменений: [\(formatter.string(from: date))]  \(valueChanges)"
+        date = Date.now
+        tapHistory.text += "История изменений: [\(formatter.string(from: date))]  \(valueChanges)\r\n"
     }
     
     func counterValue(_ counter: Int){
         counterLabel.text = "Значение счётчика: \(counter)"
-    }
-    
-    func showTapHistory(_ tapHistory: UITextView, _ historyArray: [String]){
-        self.historyArray.append(tapHistory.text)
-        tapHistory.text = String(format: "\n", arguments: historyArray)
     }
 }
