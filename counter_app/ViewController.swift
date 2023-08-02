@@ -2,11 +2,18 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    var counter: Int = 0
+    private var counter: Int = 0
     
-    var date = Date.now
-    let formatter = DateFormatter()
-
+    private var date = Date.now
+    private let formatter = DateFormatter()
+    
+    
+    @IBOutlet private weak var incrementButton: UIButton!
+    @IBOutlet private weak var resetCounterButton: UIButton!
+    @IBOutlet private weak var decrementButton: UIButton!
+    @IBOutlet private weak var tapHistoryTextView: UITextView!
+    @IBOutlet private weak var counterLabel: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -25,23 +32,28 @@ class ViewController: UIViewController {
     }
     
     
-    @IBOutlet weak var incrementButton: UIButton!
-    @IBOutlet weak var resetCounterButton: UIButton!
-    @IBOutlet weak var decrementButton: UIButton!
+    private func customButton(_ title: String, _ color: UIColor, _ button: UIButton){
+        button.setTitle(title, for: .normal)
+        button.tintColor = color
+    }
     
+    private func changesHistory(_ tapHistory: UITextView, _ valueChanges: String){
+        date = Date.now
+        tapHistory.text += "История изменений: [\(formatter.string(from: date))]  \(valueChanges)\r\n"
+    }
     
-    @IBOutlet weak var tapHistoryTextView: UITextView!
-    @IBOutlet weak var counterLabel: UILabel!
+    private func counterValue(_ counter: Int){
+        counterLabel.text = "Значение счётчика: \(counter)"
+    }
     
-    
-    @IBAction func increment(_ sender: Any) {
+    @IBAction private func increment(_ sender: Any) {
         counter += 1
         counterValue(counter)
         changesHistory(tapHistoryTextView, "+1")
     }
     
     
-    @IBAction func decrement(_ sender: Any) {
+    @IBAction private func decrement(_ sender: Any) {
         if(counter > 0){
             counter -= 1
             changesHistory(tapHistoryTextView, "-1")
@@ -50,25 +62,11 @@ class ViewController: UIViewController {
         }
         counterValue(counter)
     }
-
     
-    @IBAction func resetCounter(_ sender: Any) {
+    
+    @IBAction private func resetCounter(_ sender: Any) {
         counter = 0
         counterValue(counter)
         changesHistory(tapHistoryTextView, "значение сброшено")
-    }
-    
-    func customButton(_ title: String, _ color: UIColor, _ button: UIButton){
-        button.setTitle(title, for: .normal)
-        button.tintColor = color
-    }
-    
-    func changesHistory(_ tapHistory: UITextView, _ valueChanges: String){
-        date = Date.now
-        tapHistory.text += "История изменений: [\(formatter.string(from: date))]  \(valueChanges)\r\n"
-    }
-    
-    func counterValue(_ counter: Int){
-        counterLabel.text = "Значение счётчика: \(counter)"
     }
 }
